@@ -1,0 +1,40 @@
+.top{
+    margin-top:7%;
+    margin-left: 5%;
+    text-align: left;
+}
+.psize{
+    margin-top: 2%;
+    font-size: 20px;
+}
+.cbtn{
+    display: flex;
+    justify-content: center;
+}
+.middle{
+    margin-top: 4%;
+    margin-bottom: 5%;
+}
+.cbtop{
+    margin-top: 3%;
+}
+.btrmargin{
+    margin-right: 10%;
+}
+.bt{
+    background-color:#12ac1c;
+    color: black;
+    border-color: black;
+  margin-top: 4%;
+  font-size: 30px;
+  border-top-left-radius: 2%;
+}
+.bt:hover{
+    background-color: #12ac1c;
+    color: black;
+    border-color: black;
+}
+.disabled-link {
+    text-decoration: none;
+    color: black;
+}

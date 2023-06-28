@@ -1,0 +1,31 @@
+.topdiv{
+    margin-top: 90px;
+    margin-left: 35%;
+    margin-bottom: 1%;
+    height: 550px;
+    overflow-y: scroll;
+    width: 33%;
+    background-color:#3abc42;
+    border-radius: 10px;
+    padding: 2%;
+}
+.subbtn{
+    margin-top:4%;
+   background-color: #ffffffa0;
+   color: black;
+   border-color: black;
+   font-size: 20px;
+}
+.subbtn:hover{
+    background-color:white;
+    color: #3dc045;
+    border-color: black;
+    font-size: 20px;
+}
+.form-group{
+    margin-top: 5%;
+}
+.form-control{
+    border-color: black;
+    border-end-end-radius: 0px;
+}
