@@ -2,7 +2,47 @@ import React from 'react'
 import '../CSS/DoctorSignin.css'
 import healthif from "../Images/healthif.png";
 import { Link } from 'react-router-dom';
+
+import Web3, { net } from "web3";
+import { useState, useEffect } from "react";
+import healthify from "../contracts/healthify.json";
+
 export default function DoctorSignin() {
+  const [state, setState] = useState({ web3: null, contract: null });
+  const [docid, setDocid] = useState("");
+  const [password, setPassword] = useState("");
+  async function Submitted() {
+    //doctorSignin to blockchain
+    console.log(`Docid: ${docid}, Password: ${password}`);
+    const { contract } = state;
+    try {
+      const data = await contract.methods.doctorSignIn(docid, password).call({from:"0xf5f59DA65F790bC66FA3B4caB20ef3DD9c051dec"});
+      console.log(data);
+      alert("Login Successful");
+    }
+    catch (e) {
+      console.error(e);
+      console.log("Inavlid Credentials");
+      alert("Invalid Credentials");
+    }
+  }
+  useEffect(() => {
+    const provider = new Web3.providers.HttpProvider("HTTP://127.0.0.1:7545");
+    async function template() {
+      const web3 = new Web3(provider);
+      // console.log(web3);
+      const networkId = await web3.eth.net.getId();
+      const deployedNetwork = healthify.networks[networkId];
+      // console.log(deployedNetwork.address);
+      const contract = new web3.eth.Contract(
+        healthify.abi,
+        deployedNetwork.address
+      );
+      // console.log(contract);//instance of contract
+      setState({ web3: web3, contract: contract });
+    }
+    provider && template();
+  }, []);
   return (
     <>
       <section className="h-100 gradient-form sec">
@@ -23,6 +63,7 @@ export default function DoctorSignin() {
                             type="email"
                             id="form2Example11"
                             className="form-control"
+                            onChange={(e) => setDocid(e.target.value)}
                           />
                           <label
                             className="form-label"
@@ -37,6 +78,7 @@ export default function DoctorSignin() {
                             type="password"
                             id="form2Example22"
                             className="form-control"
+                            onChange={(e) => setPassword(e.target.value)}
                           />
                           <label
                             className="form-label"
@@ -50,6 +92,7 @@ export default function DoctorSignin() {
                           <button
                             className="btn  bt btn-primary btn-block fa-lg gradient-custom-2 mb-3"
                             type="button"
+                            onClick={Submitted}
                           >
                             Sign in
                           </button>

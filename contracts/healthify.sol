@@ -38,12 +38,13 @@ contract healthify{
         patient_register.push(new_patient);
         registered_id[_id]=new_patient;
     }
-    function patientSignIn(string memory _id,string memory _password) public view {
+    function patientSignIn(string memory _id,string memory _password) public view returns(bool){
         require(is_patient_registered[_id]==true);
         account memory current_account=registered_id[_id];
         require(keccak256(abi.encodePacked(_id)) == keccak256(abi.encodePacked(current_account.id)));
         require(keccak256(abi.encodePacked(_password)) == keccak256(abi.encodePacked(current_account.password)));
-        require(keccak256(abi.encodePacked(msg.sender)) == keccak256(abi.encodePacked(current_account.adrr)));
+        // require(keccak256(abi.encodePacked(msg.sender)) == keccak256(abi.encodePacked(current_account.adrr)));
+        return true;
     }
     function doctorSignUp(string memory _name,uint _contact,string memory _id,string memory _password) public{
         require(is_doctor_registered[_id]==false);
@@ -60,12 +61,13 @@ contract healthify{
         require(is_patient_registered[_id]==true);
         return registered_id[_id];
     }
-    function doctorSignIn(string memory _id,string memory _password) public view{
+    function doctorSignIn(string memory _id,string memory _password) public view returns(bool){
         require(is_doctor_registered[_id]==true);
         account memory current_account=registered_id[_id];
         require(keccak256(abi.encodePacked(_id)) == keccak256(abi.encodePacked(current_account.id)));
         require(keccak256(abi.encodePacked(_password)) == keccak256(abi.encodePacked(current_account.password)));
-        require(keccak256(abi.encodePacked(msg.sender)) == keccak256(abi.encodePacked(current_account.adrr)));
+        // require(keccak256(abi.encodePacked(msg.sender)) == keccak256(abi.encodePacked(current_account.adrr)));
+        return true;
     }
     function doctorSubmitDetails(string memory _id,uint _age,uint  _weight,uint  _height,string memory _bp,string memory _heartrate,uint _temp,string memory _date,string memory _prescription) public {
         DoctorLog memory new_doctorlog=DoctorLog(_id,_age,_weight,_height,_bp,_heartrate,_temp,_date,_prescription);
