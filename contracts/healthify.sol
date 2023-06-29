@@ -20,6 +20,7 @@ contract healthify{
         uint temp;
         string date;
         string prescription;
+        string report;
     }
     account[] public patient_register;//registered patients
     mapping (string=>bool) public is_patient_registered;//username of registered patients
@@ -69,8 +70,8 @@ contract healthify{
         // require(keccak256(abi.encodePacked(msg.sender)) == keccak256(abi.encodePacked(current_account.adrr)));
         return true;
     }
-    function doctorSubmitDetails(string memory _id,uint _age,uint  _weight,uint  _height,string memory _bp,string memory _heartrate,uint _temp,string memory _date,string memory _prescription) public {
-        DoctorLog memory new_doctorlog=DoctorLog(_id,_age,_weight,_height,_bp,_heartrate,_temp,_date,_prescription);
+    function doctorSubmitDetails(string memory _id,uint _age,uint  _weight,uint  _height,string memory _bp,string memory _heartrate,uint _temp,string memory _date,string memory _prescription,string memory _report) public {
+        DoctorLog memory new_doctorlog=DoctorLog(_id,_age,_weight,_height,_bp,_heartrate,_temp,_date,_prescription,_report);
         doc_log[_id].push(new_doctorlog);//is map me jo _id ke aage array of logs hai usme push karo
         numberOfRecords[_id]++;
     }

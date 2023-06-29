@@ -4,12 +4,12 @@ import "../CSS/DoctorSubmitDetails.css";
 import Web3, { net } from "web3";
 import { useState, useEffect } from "react";
 import healthify from "../contracts/healthify.json";
-import {create as ipfsHttpClient} from "ipfs-http-client";
-const client = ipfsHttpClient(
-  "https://ipfs.infura.io:5001/api/v0"
-);
+import { Web3Storage, getFilesFromPath } from "web3.storage";
+
 export default function DoctorSubmitDetails() {
   const [state, setState] = useState({ web3: null, contract: null });
+  const token=process.env.REACT_APP_WEB3_TOKEN;
+  const storage = new Web3Storage({ token });
   const [pid, setPid] = useState("");
   const [age, setAge] = useState(0);
   const [weight, setWeight] = useState(0);
@@ -20,6 +20,7 @@ export default function DoctorSubmitDetails() {
   const [date, setDate] = useState("");
   const [prescription, setPrescription] = useState("");
   const [file, setFile] = useState(null);
+  const [cidhash, setCidhash] = useState("");
   async function Submitted() {
     const { contract } = state;
     try {
@@ -30,11 +31,10 @@ export default function DoctorSubmitDetails() {
         alert("Patient ID not registered");
         return;
       } else {
-        console.log(file);
-        const add=await client.add(file);
-        const url=`https://ipfs.infura.io/ipfs/${add.path}`;
-        console.log(url);
-        alert("Patient ID registered");
+        const cid = await storage.put([file]);
+        setCidhash(cid);
+        // alert("Patient ID registered");
+        console.log(cidhash);
         await contract.methods
           .doctorSubmitDetails(
             pid,
@@ -45,7 +45,8 @@ export default function DoctorSubmitDetails() {
             heartRate,
             temperature,
             date,
-            prescription
+            prescription,
+            cidhash
           )
           .send({
             from: "0xf5f59DA65F790bC66FA3B4caB20ef3DD9c051dec",
@@ -73,6 +74,7 @@ export default function DoctorSubmitDetails() {
   // } //to fetch records
 
   useEffect(() => {
+    // console.log("web3Token = ",token);
     const provider = new Web3.providers.HttpProvider("HTTP://127.0.0.1:7545");
     async function template() {
       const web3 = new Web3(provider);
