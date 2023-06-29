@@ -4,7 +4,10 @@ import "../CSS/DoctorSubmitDetails.css";
 import Web3, { net } from "web3";
 import { useState, useEffect } from "react";
 import healthify from "../contracts/healthify.json";
-
+import {create as ipfsHttpClient} from "ipfs-http-client";
+const client = ipfsHttpClient(
+  "https://ipfs.infura.io:5001/api/v0"
+);
 export default function DoctorSubmitDetails() {
   const [state, setState] = useState({ web3: null, contract: null });
   const [pid, setPid] = useState("");
@@ -16,27 +19,46 @@ export default function DoctorSubmitDetails() {
   const [temperature, setTemperature] = useState(0);
   const [date, setDate] = useState("");
   const [prescription, setPrescription] = useState("");
+  const [file, setFile] = useState(null);
   async function Submitted() {
     const { contract } = state;
     try {
-      const exist=await contract.methods.is_patient_registered(pid).call({from: "0xf5f59DA65F790bC66FA3B4caB20ef3DD9c051dec"});
-      if(!exist){
+      const exist = await contract.methods
+        .is_patient_registered(pid)
+        .call({ from: "0xf5f59DA65F790bC66FA3B4caB20ef3DD9c051dec" });
+      if (!exist) {
         alert("Patient ID not registered");
         return;
-      }
-      else{
+      } else {
+        console.log(file);
+        const add=await client.add(file);
+        const url=`https://ipfs.infura.io/ipfs/${add.path}`;
+        console.log(url);
         alert("Patient ID registered");
-        await contract.methods.doctorSubmitDetails(pid, age, weight, height, bloodPressure, heartRate, temperature, date, prescription).send({
-          from: "0xf5f59DA65F790bC66FA3B4caB20ef3DD9c051dec",
-          gas: 3000000,
-        });
+        await contract.methods
+          .doctorSubmitDetails(
+            pid,
+            age,
+            weight,
+            height,
+            bloodPressure,
+            heartRate,
+            temperature,
+            date,
+            prescription
+          )
+          .send({
+            from: "0xf5f59DA65F790bC66FA3B4caB20ef3DD9c051dec",
+            gas: 3000000,
+          });
       }
-    }
-    catch (e) {
+    } catch (e) {
       console.error(e);
     }
     console.log("Submitted");
-    console.log(`Name: ${pid}, Age: ${age}, Weight: ${weight}, Height: ${height}, Blood Pressure: ${bloodPressure}, Heart Rate: ${heartRate}, Temperature: ${temperature}, Date: ${date}, Prescription: ${prescription}`);
+    console.log(
+      `Name: ${pid}, Age: ${age}, Weight: ${weight}, Height: ${height}, Blood Pressure: ${bloodPressure}, Heart Rate: ${heartRate}, Temperature: ${temperature}, Date: ${date}, Prescription: ${prescription}`
+    );
   }
   // async function Display() {
   //   const { contract } = state;
@@ -74,43 +96,92 @@ export default function DoctorSubmitDetails() {
         <div className="formheight">
           <div className="form-group">
             <label for="name">Patient ID:</label>
-            <input type="text" className="form-control" id="name" placeholder="Registered Patient ID" onChange={(e)=>setPid(e.target.value)} required />
+            <input
+              type="text"
+              className="form-control"
+              id="name"
+              placeholder="Registered Patient ID"
+              onChange={(e) => setPid(e.target.value)}
+              required
+            />
           </div>
           <div className="form-group">
             <label htmlFor="age">Age:</label>
-            <input type="number" className="form-control" id="age" onChange={(e)=>setAge(e.target.value)} required />
+            <input
+              type="number"
+              className="form-control"
+              id="age"
+              onChange={(e) => setAge(e.target.value)}
+              required
+            />
           </div>
           <div className="form-group">
             <label htmlFor="weight">Weight (in kg):</label>
-            <input type="number" className="form-control" id="weight" onChange={(e)=>setWeight(e.target.value)} />
+            <input
+              type="number"
+              className="form-control"
+              id="weight"
+              onChange={(e) => setWeight(e.target.value)}
+            />
           </div>
           <div className="form-group">
             <label htmlFor="height">Height (in cm):</label>
-            <input type="number" className="form-control" id="height" onChange={(e)=>setHeight(e.target.value)}/>
+            <input
+              type="number"
+              className="form-control"
+              id="height"
+              onChange={(e) => setHeight(e.target.value)}
+            />
           </div>
           <div className="form-group">
             <label htmlFor="bloodPressure">Blood Pressure:</label>
-            <input type="text" className="form-control" id="bloodPressure" onChange={(e)=>setBloodPressure(e.target.value)}/>
+            <input
+              type="text"
+              className="form-control"
+              id="bloodPressure"
+              onChange={(e) => setBloodPressure(e.target.value)}
+            />
           </div>
           <div className="form-group">
             <label htmlFor="heartRate">Heart Rate:</label>
-            <input type="text" className="form-control" id="heartRate" onChange={(e)=>setHeartRate(e.target.value)}/>
+            <input
+              type="text"
+              className="form-control"
+              id="heartRate"
+              onChange={(e) => setHeartRate(e.target.value)}
+            />
           </div>
           <div className="form-group">
             <label htmlFor="temperature">Body Temperature:</label>
-            <input type="number" className="form-control" id="temperature" onChange={(e)=>setTemperature(e.target.value)}/>
+            <input
+              type="number"
+              className="form-control"
+              id="temperature"
+              onChange={(e) => setTemperature(e.target.value)}
+            />
           </div>
           <div className="form-group">
             <label htmlFor="date">Date:</label>
-            <input type="date" className="form-control" id="date" onChange={(e)=>setDate(e.target.value)}/>
+            <input
+              type="date"
+              className="form-control"
+              id="date"
+              onChange={(e) => setDate(e.target.value)}
+            />
           </div>
           <div class="form-group">
             <label htmlFor="prescription">Prescription</label>
-            <textarea class="form-control" id="prescription" rows="4" onChange={(e)=>setPrescription(e.target.value)} required></textarea>
+            <textarea
+              class="form-control"
+              id="prescription"
+              rows="4"
+              onChange={(e) => setPrescription(e.target.value)}
+              required
+            ></textarea>
           </div>
-           <div class="form-group">
+          <div class="form-group">
             <label htmlFor="reports">Upload Reports</label>
-             <input type="file" className="form-control" id="report" />
+            <input type="file" className="form-control" id="report" onChange={(e)=>setFile(e.target.files[0])}/>
           </div>
           <button onClick={Submitted} className="subbtn btn btn-primary">
             Submit
