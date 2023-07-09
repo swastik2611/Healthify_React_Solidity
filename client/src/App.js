@@ -8,6 +8,8 @@ import PatientSignin from './Components/PatientSignin';
 import PatientSignup from './Components/PatientSignup';
 import DoctorSignin from './Components/DoctorSignin';
 import DoctorSignup from './Components/DoctorSignup';
+import DoctorMenu from './Components/DoctorMenu';
+import DoctorAccessRecord from './Components/DoctorAccessRecord';
 import DoctorSignup2 from "./Components/DoctorSignup2";
 function App() {
   return (
@@ -21,6 +23,9 @@ function App() {
         <Route path="/doctorsignup" element={<DoctorSignup />} />
         <Route path="/doctorsignup2" element={<DoctorSignup2 />} />
         <Route path="/doctorsubmitdetails" element={<DoctorSubmitDetails />} />
+        <Route path="/doctormenu" element={<DoctorMenu />} />
+        <Route path="/doctoraccessrecord" element={<DoctorAccessRecord />} />
+        <Route path="*" element={<h1 style={{fontSize:100,textAlign:'center',paddingTop:'18%',paddingBottom:'17.5%'}}>404 Not Found</h1>} />
       </Routes>
       <Footer />
     </>

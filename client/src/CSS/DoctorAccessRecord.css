@@ -1,0 +1,62 @@
+.head1{
+   margin-top:3% ;
+   padding-top: 4%;
+   background-color: #d7fae4;
+   display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+.patid{
+    display: flex;
+    justify-content: center;
+}
+.patidinp{
+   border: 3px solid #3dc045;
+   max-width: 140px;
+   padding: 2px;
+   border-radius: 5px 5px 5px 5px;
+}
+.lab{
+    font-size: 20px;
+    font-weight: bold;
+}
+.submitpatid{
+    display: flex;
+    justify-content: center;
+    margin-top: 1%;
+}
+.patidsubbtn{
+    color:black;
+    border-width: 2px;
+    border-radius: 5px 5px 5px 5px;
+    padding: 2px 10px;
+    font-size: 20px;
+}
+.patidsubbtn:hover{
+    background-color: #3dc045;
+    color: white;
+}
+.Recordcard{
+    margin-top: 3%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(116, 205, 163);
+    padding: 2%;
+}
+.showRecords{
+    display: flex;
+    flex-direction: row;
+    justify-content:start ;
+    background-color: aqua;
+}
+.leftdetails{
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(109, 90, 159);
+}
+.rightdetails {
+    display: flex;
+    flex-direction: column;
+    background-color: brown;
+}

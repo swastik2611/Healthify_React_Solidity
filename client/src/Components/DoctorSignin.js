@@ -2,12 +2,13 @@ import React from 'react'
 import '../CSS/DoctorSignin.css'
 import healthif from "../Images/healthif.png";
 import { Link } from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
 import Web3, { net } from "web3";
 import { useState, useEffect } from "react";
 import healthify from "../contracts/healthify.json";
 
 export default function DoctorSignin() {
+  const navigate = useNavigate();
   const [state, setState] = useState({ web3: null, contract: null });
   const [docid, setDocid] = useState("");
   const [password, setPassword] = useState("");
@@ -19,6 +20,7 @@ export default function DoctorSignin() {
       const data = await contract.methods.doctorSignIn(docid, password).call({from:"0xf5f59DA65F790bC66FA3B4caB20ef3DD9c051dec"});
       console.log(data);
       alert("Login Successful");
+      navigate("/doctormenu",{state:{docid:docid}});
     }
     catch (e) {
       console.error(e);
