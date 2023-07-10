@@ -13,10 +13,14 @@ export default function AccessRecord() {
   let dateArray = [];
   let prescriptionArray = [];
   let cidhashArray = [];
+  let linkArray = [];
   const [state, setState] = useState({ web3: null, contract: null });
   const [patid, setPatid] = useState("");
   const [nrecords, setNrecords] = useState(0);
 
+  const [llink, setLlink] = useState("https://");
+  const [rlink, setRlink] = useState(".ipfs.w3s.link");
+  const [link, setLink] = useState([]);
   const [ind, setInd] = useState(4);
   const [pid, setPid] = useState([]);
   const [age, setAge] = useState([]);
@@ -49,6 +53,7 @@ export default function AccessRecord() {
         dateArray.push(record[i].date);
         prescriptionArray.push(record[i].prescription);
         cidhashArray.push(record[i].report);
+        linkArray.push(llink + cidhashArray[i] + rlink);
       }
       setPid(patid);
       setBloodPressure(bloodPressureArray);
@@ -57,7 +62,7 @@ export default function AccessRecord() {
       setDate(dateArray);
       setPrescription(prescriptionArray);
       setCidhash(cidhashArray);
-
+      setLink(linkArray);
       const intWeightArray = weightArray.map((bigint) => Number(bigint));
       setWeight(intWeightArray);
       // console.log("wt arr",intWeightArray);
@@ -69,6 +74,10 @@ export default function AccessRecord() {
       const intHeightArray = heightArray.map((bigint) => Number(bigint));
       setHeight(intHeightArray);
       // console.log("height arr",intHeightArray);
+
+      const intTempArray = temperatureArray.map((bigint) => Number(bigint));
+      setTemperature(intTempArray);
+      // console.log("temp arr",intTempArray);
 
       // console.log("age",age);
       // console.log("weight",weight);
@@ -127,50 +136,90 @@ export default function AccessRecord() {
             <h2>Patient Record</h2>
           </div>
           <div className="showRecords">
-            <div className="leftdetails">
+            <div className="clabel leftdetails">
               <div>
-                <label className="clabel hllabel">Patient ID:</label>
+                <label className="hllabel">
+                  Patient
+                  ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                </label>
                 <span className="healthpara">{pid}</span>
               </div>
               <div>
-                <label className="clabel hllabel">Weight:</label>
+                <label className="hllabel">
+                  Weight&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                </label>
                 <span className="healthpara">{weight[ind]}</span>
               </div>
               <div>
-                <label className="clabel hllabel">Blood Pressure:</label>
+                <label className="hllabel">
+                  Blood
+                  Pressure&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                </label>
                 <span className="healthpara">{bloodPressure[ind]}</span>
               </div>
               <div>
-                <label className="clabel hllabel">Body Temperature:</label>
+                <label className="hllabel">
+                  Body Temperature&nbsp;&nbsp;&nbsp;:
+                </label>
                 <span className="healthpara">{temperature[ind]}</span>
               </div>
-              <div>
-                <label className="clabel hllabel">Prescription:</label>
+              {/* <div>
+                <label className="hllabel">
+                  Prescription&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                </label>
                 <span className="healthpara">{prescription[ind]}</span>
-              </div>
+              </div> */}
             </div>
-            <div className="rightdetails">
+            <div className="clabel rightdetails">
               <div>
-                <label className="clabel hrlabel">Age:</label>
+                <label className="hrlabel">
+                  Age&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                </label>
                 <span className="healthpara">{age[ind]}</span>
               </div>
               <div>
-                <label className="clabel hrlabel">Height:</label>
+                <label className="hrlabel">
+                  Height&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                </label>
                 <span className="healthpara">{height[ind]}</span>
               </div>
               <div>
-                <label className="clabel hrlabel">Heart Rate:</label>
+                <label className="hrlabel">Heart Rate&nbsp;&nbsp;:</label>
                 <span className="healthpara">{heartRate[ind]}</span>
               </div>
               <div>
-                <label className="clabel hrlabel">Date:</label>
+                <label className="hrlabel">
+                  Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                </label>
                 <span className="healthpara">{date[ind]}</span>
               </div>
-              <div>
-                <label className="clabel hllabel">Report:</label>
-                <span className="healthpara">{cidhash[ind]}</span>
-              </div>
+              {/* <div>
+                <label className="hrlabel">
+                  Report&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                </label>
+                <span className="healthpara">
+                  <a className="hyplink" href={link[ind]}>
+                    Find here
+                  </a>
+                </span>
+              </div> */}
             </div>
+          </div>
+        </div>
+        <div className="bottomdiv">
+          <div className="bottomRecord">
+            <label className="blabel">Prescription&nbsp;&nbsp;:</label>
+            <span className="bspan">{prescription[ind]}</span>
+          </div>
+          <div className="bottomRecord">
+            <label className="blabel">
+              Report&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+            </label>
+            <span className="bspan">
+              <a className="hyplink" href={link[ind]}>
+                Find here
+              </a>
+            </span>
           </div>
         </div>
       </div>
