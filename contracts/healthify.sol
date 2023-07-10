@@ -73,10 +73,12 @@ contract healthify{
     function doctorSubmitDetails(string memory _id,uint _age,uint  _weight,uint  _height,string memory _bp,string memory _heartrate,uint _temp,string memory _date,string memory _prescription,string memory _report) public {
         DoctorLog memory new_doctorlog=DoctorLog(_id,_age,_weight,_height,_bp,_heartrate,_temp,_date,_prescription,_report);
         doc_log[_id].push(new_doctorlog);//is map me jo _id ke aage array of logs hai usme push karo
-        numberOfRecords[_id]++;
+       uint n=numberOfRecords[_id];
+        numberOfRecords[_id]=n+1;
     }
     function doctorViewDetails(string memory _id) public view returns(DoctorLog[] memory)//for doctor to check patient's details history
     {
+        require(is_patient_registered[_id]==true);
         return doc_log[_id];
     }
     function setTest(uint _val) public {//testing

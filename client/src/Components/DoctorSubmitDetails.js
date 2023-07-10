@@ -33,6 +33,7 @@ export default function DoctorSubmitDetails() {
       } else {
         const cid = await storage.put([file]);
         setCidhash(cid);
+        console.log(typeof(cid));
         // alert("Patient ID registered");
         console.log(cidhash);
         await contract.methods
@@ -124,6 +125,7 @@ export default function DoctorSubmitDetails() {
               className="form-control"
               id="weight"
               onChange={(e) => setWeight(e.target.value)}
+              required
             />
           </div>
           <div className="form-group">
@@ -133,6 +135,7 @@ export default function DoctorSubmitDetails() {
               className="form-control"
               id="height"
               onChange={(e) => setHeight(e.target.value)}
+              required
             />
           </div>
           <div className="form-group">
@@ -142,6 +145,7 @@ export default function DoctorSubmitDetails() {
               className="form-control"
               id="bloodPressure"
               onChange={(e) => setBloodPressure(e.target.value)}
+              required
             />
           </div>
           <div className="form-group">
@@ -151,6 +155,7 @@ export default function DoctorSubmitDetails() {
               className="form-control"
               id="heartRate"
               onChange={(e) => setHeartRate(e.target.value)}
+              required
             />
           </div>
           <div className="form-group">
@@ -160,6 +165,7 @@ export default function DoctorSubmitDetails() {
               className="form-control"
               id="temperature"
               onChange={(e) => setTemperature(e.target.value)}
+              required
             />
           </div>
           <div className="form-group">
@@ -169,6 +175,7 @@ export default function DoctorSubmitDetails() {
               className="form-control"
               id="date"
               onChange={(e) => setDate(e.target.value)}
+              required
             />
           </div>
           <div class="form-group">
@@ -183,7 +190,7 @@ export default function DoctorSubmitDetails() {
           </div>
           <div class="form-group">
             <label htmlFor="reports">Upload Reports</label>
-            <input type="file" className="form-control" id="report" onChange={(e)=>setFile(e.target.files[0])}/>
+            <input type="file" className="form-control" id="report" onChange={(e)=>setFile(e.target.files[0])} required/>
           </div>
           <button onClick={Submitted} className="subbtn btn btn-primary">
             Submit

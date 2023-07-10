@@ -73,7 +73,7 @@ export default function DoctorMenu() {
         <div className="middlec">
           <h1 className="heading">Choose the option</h1>
           <div className="cbtn">
-            <Link to="/DoctorSignin" className="disabled-link cbtop btrmargin">
+            <Link to="/doctoraccessrecord" className="disabled-link cbtop btrmargin">
               <button className="btn bt btn-primary btn-lg btn-block">
                 View Record
               </button>
