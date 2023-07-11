@@ -6,10 +6,15 @@ import { useState, useEffect } from "react";
 import healthify from "../contracts/healthify.json";
 import { Web3Storage, getFilesFromPath } from "web3.storage";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
+
 export default function DoctorSubmitDetails() {
   const [state, setState] = useState({ web3: null, contract: null });
   const token=process.env.REACT_APP_WEB3_TOKEN;
   const storage = new Web3Storage({ token });
+  const navigate = useNavigate();
   const [pid, setPid] = useState("");
   const [age, setAge] = useState(0);
   const [weight, setWeight] = useState(0);
@@ -31,6 +36,7 @@ export default function DoctorSubmitDetails() {
         alert("Patient ID not registered");
         return;
       } else {
+        toast.success("Submission Successful");
         const cid = await storage.put([file]);
         setCidhash(cid);
         console.log(typeof(cid));
@@ -190,14 +196,20 @@ export default function DoctorSubmitDetails() {
           </div>
           <div class="form-group">
             <label htmlFor="reports">Upload Reports</label>
-            <input type="file" className="form-control" id="report" onChange={(e)=>setFile(e.target.files[0])} required/>
+            <input
+              type="file"
+              className="form-control"
+              id="report"
+              onChange={(e) => setFile(e.target.files[0])}
+              required
+            />
           </div>
           <button onClick={Submitted} className="subbtn btn btn-primary">
             Submit
           </button>
         </div>
       </div>
-      {/* <button onClick={Display}>Read</button> */}
+      <ToastContainer />
     </>
   );
 }

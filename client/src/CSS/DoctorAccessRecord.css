@@ -1,10 +1,14 @@
 .head1{
-   margin-top:3% ;
-   padding-top: 4%;
-   background-color: #d7fae4;
+   margin-top:2% ;
+   background-color: rgb(116, 205, 163);
    display: flex;
     flex-direction: column;
     flex: 1;
+}
+.askid{
+    background-color: #d7fae4;
+    padding-top:4%;
+    padding-bottom: 2%;
 }
 .patid{
     display: flex;
@@ -38,28 +42,27 @@
     color: white;
 }
 .Recordcard{
-    margin-top: 3%;
+    /* margin-top: 3%; */
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: rgb(116, 205, 163);
-    padding: 2% 2% 0 2%;
+    padding: 1% 2% 0 2%;
 }
 .showRecords{
     display: flex;
     flex-direction: row;
-    justify-content:start ;
-    background-color: aqua;
+    justify-content:center ;
+    /* background-color: aqua; */
 }
 .leftdetails{
     display: flex;
     flex-direction: column;
-    background-color: rgb(109, 90, 159);
+    /* background-color: rgb(109, 90, 159); */
 }
 .rightdetails {
     display: flex;
     flex-direction: column;
-    background-color: brown;
+    /* background-color: brown; */
 }
 .hllabel{
     display: inline-block;
@@ -77,6 +80,7 @@
    font-size: 20px;
 }
 .healthpara{
+    padding-left:10px ;
     display:inline-block;
     width: 200px;
 }
@@ -94,7 +98,7 @@
     flex-direction: row;
     justify-content: center;
     font-size: 20px;
-    padding-top: 1%;
+    height: 3rem;
 }
 .blabel{
     display: inline-block;
@@ -104,4 +108,38 @@
 .bspan{
     display: inline-block;
     width: 200px;
+    padding-left: 10px;
+}
+.separator-col{
+    font-size: 20px;
+    font-weight: bold;
+}
+.infodiv{
+    height:3rem;
+}
+.next-prevctr{
+    display: flex;
+    flex-direction: row;
+    flex: space-around;
+   justify-content: space-around;
+    padding: 1% 40% 1% 40%;
+}
+.npbtntext{
+    font-size: 20px;
+    font-weight: bold;
+}
+.npbtntext{
+    padding: 5px 25px;
+}
+.sequence{
+    display: flex;
+    justify-content: center;
+}
+.sequence-number{
+    font-size: 18px;
+    font-weight: bold;
+}
+.button-inactive{
+    opacity: 0.5;
+    cursor: not-allowed;
 }

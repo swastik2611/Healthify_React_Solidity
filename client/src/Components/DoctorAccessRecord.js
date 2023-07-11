@@ -3,6 +3,8 @@ import "../CSS/DoctorAccessRecord.css";
 import Web3, { net } from "web3";
 import { useState, useEffect } from "react";
 import healthify from "../contracts/healthify.json";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export default function AccessRecord() {
   let ageArray = [];
   let weightArray = [];
@@ -16,12 +18,12 @@ export default function AccessRecord() {
   let linkArray = [];
   const [state, setState] = useState({ web3: null, contract: null });
   const [patid, setPatid] = useState("");
-  const [nrecords, setNrecords] = useState(0);
+  const [nrecords, setNrecords] = useState(1);
 
   const [llink, setLlink] = useState("https://");
   const [rlink, setRlink] = useState(".ipfs.w3s.link");
   const [link, setLink] = useState([]);
-  const [ind, setInd] = useState(4);
+  const [ind, setInd] = useState(0);
   const [pid, setPid] = useState([]);
   const [age, setAge] = useState([]);
   const [weight, setWeight] = useState([]);
@@ -90,7 +92,44 @@ export default function AccessRecord() {
       // console.log("cidhash",cidhash);
     } catch (e) {
       console.error(e);
+      // toast.error("Invalid Patient ID");
       alert("Inavlid Patient ID");
+    }
+  }
+  useEffect(() => {
+      const pbtn = document.getElementById("prevbtn");
+      const nbtn = document.getElementById("nextbtn");
+      if(ind==0)
+      {
+        pbtn.disabled = true;
+        pbtn.classList.add("button-inactive");
+      }
+      else
+      {
+        pbtn.disabled = false;
+        pbtn.classList.remove("button-inactive");
+      }
+      if(ind==nrecords-1)
+      {
+        nbtn.disabled = true;
+        nbtn.classList.add("button-inactive");
+      }
+      else
+      {
+        nbtn.disabled = false;
+        nbtn.classList.remove("button-inactive");
+      }
+    }, [ind]);
+  function getPrevious() {
+    if(ind>0)
+    {
+      setInd(ind-1);
+    }
+  }
+  function getNext() {
+    if(ind<nrecords-1)
+    {
+      setInd(ind+1);
     }
   }
   useEffect(() => {
@@ -113,7 +152,7 @@ export default function AccessRecord() {
   return (
     <>
       <div className="head1">
-        <div>
+        <div className="askid">
           <div className="patid">
             <div className="askdetails">
               <label className="lab">Enter ID&nbsp;&nbsp;:</label>&nbsp;&nbsp;
@@ -133,34 +172,28 @@ export default function AccessRecord() {
         </div>
         <div className="Recordcard">
           <div className="title">
-            <h2>Patient Record</h2>
+            <h2>Patient's Record</h2>
           </div>
           <div className="showRecords">
             <div className="clabel leftdetails">
-              <div>
-                <label className="hllabel">
-                  Patient
-                  ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
-                </label>
+              <div className="infodiv">
+                <label className="hllabel">Patient ID</label>
+                <span className="separator-col">:</span>
                 <span className="healthpara">{pid}</span>
               </div>
-              <div>
-                <label className="hllabel">
-                  Weight&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
-                </label>
+              <div className="infodiv">
+                <label className="hllabel">Weight</label>
+                <span className="separator-col">:</span>
                 <span className="healthpara">{weight[ind]}</span>
               </div>
-              <div>
-                <label className="hllabel">
-                  Blood
-                  Pressure&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
-                </label>
+              <div className="infodiv">
+                <label className="hllabel">Blood Pressure</label>
+                <span className="separator-col">:</span>
                 <span className="healthpara">{bloodPressure[ind]}</span>
               </div>
-              <div>
-                <label className="hllabel">
-                  Body Temperature&nbsp;&nbsp;&nbsp;:
-                </label>
+              <div className="infodiv">
+                <label className="hllabel">Body Temperature</label>
+                <span className="separator-col">:</span>
                 <span className="healthpara">{temperature[ind]}</span>
               </div>
               {/* <div>
@@ -171,26 +204,24 @@ export default function AccessRecord() {
               </div> */}
             </div>
             <div className="clabel rightdetails">
-              <div>
-                <label className="hrlabel">
-                  Age&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
-                </label>
+              <div className="infodiv">
+                <label className="hrlabel">Age</label>
+                <span className="separator-col">:</span>
                 <span className="healthpara">{age[ind]}</span>
               </div>
-              <div>
-                <label className="hrlabel">
-                  Height&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
-                </label>
+              <div className="infodiv">
+                <label className="hrlabel">Height</label>
+                <span className="separator-col">:</span>
                 <span className="healthpara">{height[ind]}</span>
               </div>
-              <div>
-                <label className="hrlabel">Heart Rate&nbsp;&nbsp;:</label>
+              <div className="infodiv">
+                <label className="hrlabel">Heart Rate</label>
+                <span className="separator-col">:</span>
                 <span className="healthpara">{heartRate[ind]}</span>
               </div>
-              <div>
-                <label className="hrlabel">
-                  Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
-                </label>
+              <div className="infodiv">
+                <label className="hrlabel">Date</label>
+                <span className="separator-col">:</span>
                 <span className="healthpara">{date[ind]}</span>
               </div>
               {/* <div>
@@ -208,13 +239,13 @@ export default function AccessRecord() {
         </div>
         <div className="bottomdiv">
           <div className="bottomRecord">
-            <label className="blabel">Prescription&nbsp;&nbsp;:</label>
+            <label className="blabel">Prescription</label>
+            <span className="separator-col">:</span>
             <span className="bspan">{prescription[ind]}</span>
           </div>
           <div className="bottomRecord">
-            <label className="blabel">
-              Report&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
-            </label>
+            <label className="blabel">Report</label>
+            <span className="separator-col">:</span>
             <span className="bspan">
               <a className="hyplink" href={link[ind]}>
                 Find here
@@ -222,7 +253,28 @@ export default function AccessRecord() {
             </span>
           </div>
         </div>
+        <div className="next-prevctr">
+          <div id="prevbtn" className="prevbtndiv npbtn">
+            <button
+              className="prevbtn npbtntext patidsubbtn"
+              onClick={getPrevious}
+            >
+              Prev
+            </button>
+          </div>
+          <div id="nextbtn" className="nextbtndiv npbtn">
+            <button className="nextbtn npbtntext patidsubbtn" onClick={getNext}>
+              Next
+            </button>
+          </div>
+        </div>
+        <div className="sequence">
+          <label className="sequence-number">
+            {ind + 1}/{nrecords}
+          </label>
+        </div>
       </div>
+      <ToastContainer />
     </>
   );
 }

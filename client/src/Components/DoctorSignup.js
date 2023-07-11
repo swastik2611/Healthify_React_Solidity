@@ -7,6 +7,9 @@ import Web3, { net } from "web3";
 import { useState, useEffect } from "react";
 import healthify from "../contracts/healthify.json";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 export default function DoctorSignup() {
   const [state, setState] = useState({ web3: null, contract: null });
   const [name, setName] = useState("");
@@ -197,6 +200,7 @@ export default function DoctorSignup() {
           </div>
         </div>
       </section>
+      <ToastContainer />
     </>
   );
 }
