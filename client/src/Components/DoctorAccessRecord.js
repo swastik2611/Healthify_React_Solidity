@@ -97,29 +97,8 @@ export default function AccessRecord() {
     }
   }
   useEffect(() => {
-      const pbtn = document.getElementById("prevbtn");
-      const nbtn = document.getElementById("nextbtn");
-      if(ind==0)
-      {
-        pbtn.disabled = true;
-        pbtn.classList.add("button-inactive");
-      }
-      else
-      {
-        pbtn.disabled = false;
-        pbtn.classList.remove("button-inactive");
-      }
-      if(ind==nrecords-1)
-      {
-        nbtn.disabled = true;
-        nbtn.classList.add("button-inactive");
-      }
-      else
-      {
-        nbtn.disabled = false;
-        nbtn.classList.remove("button-inactive");
-      }
-    }, [ind]);
+    setInd(0);
+  }, [patid]);
   function getPrevious() {
     if(ind>0)
     {
@@ -163,11 +142,11 @@ export default function AccessRecord() {
                 onChange={(e) => setPatid(e.target.value)}
               />
             </div>
-          </div>
-          <div className="submitpatid">
-            <button className="patidsubbtn" onClick={fetchRecords}>
-              Submit
-            </button>
+            <div className="submitpatid">
+              <button className="patidsubbtn" onClick={fetchRecords}>
+                Submit
+              </button>
+            </div>
           </div>
         </div>
         <div className="Recordcard">
@@ -240,13 +219,13 @@ export default function AccessRecord() {
         <div className="bottomdiv">
           <div className="bottomRecord">
             <label className="blabel">Prescription</label>
-            <span className="separator-col">:</span>
-            <span className="bspan">{prescription[ind]}</span>
+            <span className="separator-col separator-col-pres">:</span>
+            <span className="bspan1">{prescription[ind]}</span>
           </div>
           <div className="bottomRecord">
             <label className="blabel">Report</label>
-            <span className="separator-col">:</span>
-            <span className="bspan">
+            <span className="separator-col ">:</span>
+            <span className="bspan2">
               <a className="hyplink" href={link[ind]}>
                 Find here
               </a>
