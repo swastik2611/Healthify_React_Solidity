@@ -2,12 +2,14 @@ import React from "react";
 import "../CSS/PatientSignup.css";
 import healthif from "../Images/healthif.png";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Web3, { net } from "web3";
 import { useState, useEffect } from "react";
 import healthify from "../contracts/healthify.json";
 
 export default function DoctorSignup() {
   const [state, setState] = useState({ web3: null, contract: null });
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [contact, setContact] = useState(0);
   const [patid, setPatid] = useState("");
@@ -31,6 +33,8 @@ export default function DoctorSignup() {
           gas: 3000000,
         });
       console.log("Submitted to blockchain");
+      alert("Account Created Successfully");
+      navigate("/patientsignin");
     } catch (e) {
       console.error(e);
       console.log("ID already exists");

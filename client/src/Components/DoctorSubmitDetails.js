@@ -1,6 +1,6 @@
 import React from "react";
 import "../CSS/DoctorSubmitDetails.css";
-
+import healthif from "../Images/healthif.png";
 import Web3, { net } from "web3";
 import { useState, useEffect } from "react";
 import healthify from "../contracts/healthify.json";
@@ -59,6 +59,17 @@ export default function DoctorSubmitDetails() {
             from: "0xf5f59DA65F790bC66FA3B4caB20ef3DD9c051dec",
             gas: 3000000,
           });
+          document.getElementById("name").value = "";
+          document.getElementById("age").value = "";
+          document.getElementById("weight").value = "";
+          document.getElementById("height").value = "";
+          document.getElementById("bloodPressure").value = "";
+          document.getElementById("heartRate").value = "";
+          document.getElementById("temperature").value = "";
+          document.getElementById("date").value = "";
+          document.getElementById("prescription").value = "";
+           document.getElementById("file").reset();
+
       }
     } catch (e) {
       console.error(e);
@@ -103,6 +114,9 @@ export default function DoctorSubmitDetails() {
       <div className="container topdiv">
         <h2>Enter the health parameters</h2>
         <div className="formheight">
+          <div className="imgg">
+            <img className="im" src={healthif} alt="logo" />
+          </div>
           <div className="form-group">
             <label for="name">Patient ID:</label>
             <input

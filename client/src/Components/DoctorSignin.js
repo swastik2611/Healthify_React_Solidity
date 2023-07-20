@@ -19,13 +19,15 @@ export default function DoctorSignin() {
     try {
       const data = await contract.methods.doctorSignIn(docid, password).call({from:"0xf5f59DA65F790bC66FA3B4caB20ef3DD9c051dec"});
       console.log(data);
-      alert("Login Successful");
+      // alert("Login Successful");
       navigate("/doctormenu",{state:{docid:docid}});
     }
     catch (e) {
       console.error(e);
       console.log("Inavlid Credentials");
       alert("Invalid Credentials");
+      document.getElementById("username").value = "";
+      document.getElementById("password").value = "";
     }
   }
   useEffect(() => {
@@ -63,7 +65,7 @@ export default function DoctorSignin() {
                         <div className="form-outline mb-4 mx-7">
                           <input
                             type="email"
-                            id="form2Example11"
+                            id="username"
                             className="form-control"
                             onChange={(e) => setDocid(e.target.value)}
                           />
@@ -78,7 +80,7 @@ export default function DoctorSignin() {
                         <div className="form-outline mb-4">
                           <input
                             type="password"
-                            id="form2Example22"
+                            id="password"
                             className="form-control"
                             onChange={(e) => setPassword(e.target.value)}
                           />

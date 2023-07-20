@@ -1,9 +1,8 @@
 .topdiv{
-    margin-top: 90px;
+    margin-top: 1.5%;
     margin-left: 35%;
     margin-bottom: 1%;
     height: 600px;
-    /* overflow-y: scroll; */
     width: 33%;
     background-color:#3abc42;
     border-radius: 10px;
@@ -28,4 +27,9 @@
 .form-control{
     border-color: black;
     border-end-end-radius: 0px;
+}
+.imgg
+{
+   display: flex;
+    justify-content: center;
 }

@@ -55,7 +55,11 @@ export default function AccessRecord() {
         dateArray.push(record[i].date);
         prescriptionArray.push(record[i].prescription);
         cidhashArray.push(record[i].report);
-        linkArray.push(llink + cidhashArray[i] + rlink);
+        if (cidhashArray[i] === "") {
+          linkArray.push("no_record");
+        } else {
+          linkArray.push(llink + cidhashArray[i] + rlink);
+        }
       }
       setPid(patid);
       setBloodPressure(bloodPressureArray);
@@ -89,7 +93,8 @@ export default function AccessRecord() {
       // console.log("temperature",temperature);
       // console.log("date",date);
       // console.log("prescription",prescription);
-      // console.log("cidhash",cidhash);
+      console.log("cidhash",cidhash);
+      console.log("link", link);
     } catch (e) {
       console.error(e);
       // toast.error("Invalid Patient ID");
@@ -226,7 +231,7 @@ export default function AccessRecord() {
             <label className="blabel">Report</label>
             <span className="separator-col ">:</span>
             <span className="bspan2">
-              <a className="hyplink" href={link[ind]}>
+              <a className="hyplink" href={link[ind]} target="_blank">
                 Find here
               </a>
             </span>

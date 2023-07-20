@@ -1,156 +1,153 @@
-.head1{
-   padding-bottom: 1%;
-   background-color: rgb(116, 205, 163);
-   display: flex;
-    flex-direction: column;
-    flex: 1;
-}
-.askid{
-    background-color: #d7fae4;
-    padding-top:2%;
-    padding-bottom: 1.3%;
-}
-.patid{
+.first-ctr
+{
+background-color: rgb(116, 205, 163);
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    padding-bottom: 1%;
 }
-.patidinp{
-   border: 3px solid #3dc045;
-   max-width: 140px;
-   padding: 2px;
-   border-radius: 5px 5px 5px 5px;
+.second-ctr
+{
+    background-color: #d7fae4;
+    display: flex;
+    justify-content: space-evenly;
+    padding:2% 0 2% 0 ;
 }
-.lab{
+.labdiv{
     font-size: 20px;
     font-weight: bold;
 }
-.submitpatid{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: 2%;
-}
-.patidsubbtn{
-    background-color:#12ac1c;
-    color:black;
-    border-width: 2px;
-    border-radius: 5px 5px 5px 5px;
-    padding: 2px 10px;
+.sppd{
     font-size: 20px;
+    font-weight:lighter;
 }
-.patidsubbtn:hover{
-    background-color: #3dc045;
-    color: white;
-}
-.Recordcard{
-    /* margin-top: 3%; */
+.Recordcard {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 1% 2% 0 2%;
 }
-.showRecords{
+.showRecords {
     display: flex;
     flex-direction: row;
-    justify-content:center ;
+    justify-content: center;
     /* background-color: aqua; */
 }
-.leftdetails{
+
+.leftdetails {
     display: flex;
     flex-direction: column;
     /* background-color: rgb(109, 90, 159); */
 }
+
 .rightdetails {
     display: flex;
     flex-direction: column;
     /* background-color: brown; */
 }
-.hllabel{
+
+.hllabel {
     display: inline-block;
     width: 220px;
     padding: 2%;
     font-weight: bold;
 }
-.hrlabel{
+
+.hrlabel {
     display: inline-block;
     width: 130px;
     padding: 2%;
     font-weight: bold;
 }
-.clabel{
-   font-size: 20px;
+
+.clabel {
+    font-size: 20px;
 }
-.healthpara{
-    padding-left:10px ;
-    display:inline-block;
+
+.healthpara {
+    padding-left: 10px;
+    display: inline-block;
     width: 200px;
 }
-.hyplink{
+
+.hyplink {
     color: black;
     text-decoration: underline;
 }
-.bottomdiv{
+
+.bottomdiv {
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
-.bottomRecord{
+
+.bottomRecord {
     display: flex;
     flex-direction: row;
     justify-content: center;
     font-size: 20px;
     padding: 1%;
 }
-.blabel{
+
+.blabel {
     display: inline-block;
     width: 150px;
     font-weight: bold;
 }
-.bspan1{
+
+.bspan1 {
     display: inline-block;
     width: 525px;
     padding-left: 10px;
     height: max-content;
 }
-.bspan2{
+
+.bspan2 {
     display: inline-block;
     width: 200px;
     padding-left: 10px;
 }
-.separator-col{
+
+.separator-col {
     font-size: 20px;
     font-weight: bold;
 }
-.separator-col-pres{
+
+.separator-col-pres {
     padding-left: 60px;
 }
-.infodiv{
-    height:3rem;
+
+.infodiv {
+    height: 3rem;
 }
-.next-prevctr{
+
+.next-prevctr {
     display: flex;
     flex-direction: row;
     flex: space-around;
-   justify-content: space-around;
+    justify-content: space-around;
     padding: 1% 40% 1% 40%;
 }
-.npbtntext{
+
+.npbtntext {
     font-size: 20px;
     font-weight: bold;
 }
-.npbtntext{
+
+.npbtntext {
     padding: 5px 25px;
 }
-.sequence{
+
+.sequence {
     display: flex;
     justify-content: center;
 }
-.sequence-number{
+
+.sequence-number {
     font-size: 18px;
     font-weight: bold;
 }
-.button-inactive{
+
+.button-inactive {
     opacity: 0.5;
     cursor: not-allowed;
 }

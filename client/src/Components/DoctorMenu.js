@@ -9,9 +9,10 @@ import healthify from "../contracts/healthify.json";
 
 export default function DoctorMenu() {
     const location = useLocation();
+    const [ctr, setCtr] = useState(0);
     const [state, setState] = useState({ web3: null, contract: null });
-    const [name, setName] = useState("abcd");
-    const [contact, setContact] = useState(42);
+    const [name, setName] = useState("");
+    const [contact, setContact] = useState(null);
     const [docid, setDocid] = useState(location.state.docid);
     // console.log("hmm",location.state.docid);
     useEffect(() => {
@@ -28,23 +29,43 @@ export default function DoctorMenu() {
             );
             // console.log(contract);//instance of contract
             setState({ web3: web3, contract: contract });
+            setCtr(ctr + 1);
         }
         provider && template();
     }, []);
+    useEffect(() => {
+        FetchDetails();
+    }, [ctr]);
    async function FetchDetails() {
+    // const { contract_ } = state;
+    // try {
+    //   const data = await contract_.methods
+    //     .viewDoctors(docid)
+    //     .call({ from: "0xf5f59DA65F790bC66FA3B4caB20ef3DD9c051dec" });
+    //   console.log("ddd",data);
+    //   setName(data[0]);
+    //   setContact(data[1].toString());
+    //   alert("Details Fetched");
+    // } catch (e) {
+    //   console.error(e);
+    //   console.log("Inavlid Credentials");
+    //   // alert("Fetch Details Failed");
+    // }
     //fetching doctor details from blockchain
     const { contract } = state;
     try {
-      const data = await contract.methods.viewDoctors(docid).call({from:"0xf5f59DA65F790bC66FA3B4caB20ef3DD9c051dec"});
-      console.log(data);
+      const data = await contract.methods
+        .viewDoctors(docid)
+        .call({ from: "0xf5f59DA65F790bC66FA3B4caB20ef3DD9c051dec" });
+      console.log("data",data);
       setName(data[0]);
-      setContact(data[1]);
-      alert("Details Fetched");
+      setContact(data[1].toString());
+      // alert("Details Fetched");
     }
     catch (e) {
         console.error(e);
         console.log("Inavlid Credentials");
-        alert("Invalid Credentials");
+        // alert("Fetch Details Failed");
     }
     }
   return (

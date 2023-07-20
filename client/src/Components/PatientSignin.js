@@ -2,12 +2,13 @@ import React from 'react'
 import healthif from '../Images/healthif.png'
 import '../CSS/PatientSignin.css'
 import { Link } from 'react-router-dom'
-
+import { useNavigate } from "react-router-dom";
 import Web3, { net } from "web3";
 import { useState, useEffect } from "react";
 import healthify from "../contracts/healthify.json";
 
 export default function PatientSignin() {
+   const navigate = useNavigate();
    const [state, setState] = useState({ web3: null, contract: null });
    const [patid, setPatid] = useState("");
    const [password, setPassword] = useState("");
@@ -20,11 +21,13 @@ export default function PatientSignin() {
          .patientSignIn(patid, password)
          .call({ from: "0xf5f59DA65F790bC66FA3B4caB20ef3DD9c051dec" });
        console.log(data);
-       alert("Login Successful");
+        navigate("/patientaccessrecord", { state: { patid: patid } });
      } catch (e) {
        console.error(e);
        console.log("Inavlid Credentials");
        alert("Invalid Credentials");
+       document.getElementById("username").value = "";
+       document.getElementById("password").value = "";
      }
    }
    useEffect(() => {
@@ -63,7 +66,7 @@ export default function PatientSignin() {
                         <div className="form-outline mb-4 mx-7">
                           <input
                             type="email"
-                            id="form2Example11"
+                            id="username"
                             className="form-control"
                             onChange={(e) => setPatid(e.target.value)}
                           />
@@ -78,7 +81,7 @@ export default function PatientSignin() {
                         <div className="form-outline mb-4">
                           <input
                             type="password"
-                            id="form2Example22"
+                            id="password"
                             className="form-control"
                             onChange={(e) => setPassword(e.target.value)}
                           />
@@ -96,7 +99,7 @@ export default function PatientSignin() {
                             type="button"
                             onClick={Submitted}
                           >
-                            Log in
+                            Sign in
                           </button>
                         </div>
 

@@ -10,6 +10,7 @@ import DoctorSignin from './Components/DoctorSignin';
 import DoctorSignup from './Components/DoctorSignup';
 import DoctorMenu from './Components/DoctorMenu';
 import DoctorAccessRecord from './Components/DoctorAccessRecord';
+import PatientAccessRecord from './Components/PatientAccessRecord';
 import DoctorSignup2 from "./Components/DoctorSignup2";
 function App() {
   return (
@@ -25,7 +26,8 @@ function App() {
         <Route path="/doctorsubmitdetails" element={<DoctorSubmitDetails />} />
         <Route path="/doctormenu" element={<DoctorMenu />} />
         <Route path="/doctoraccessrecord" element={<DoctorAccessRecord />} />
-        <Route path="*" element={<h1 style={{fontSize:100,textAlign:'center',paddingTop:'18%',paddingBottom:'17.5%'}}>404 Not Found</h1>} />
+        <Route path="/patientaccessrecord" element={<PatientAccessRecord />} />
+        <Route path="*" element={<h1 style={{fontSize:100,textAlign:'center',paddingTop:'16%',paddingBottom:'15.5%'}}>404 Not Found</h1>} />
       </Routes>
       <Footer />
     </>
