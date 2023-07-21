@@ -90,27 +90,29 @@ export default function DoctorMenu() {
         <div className="dochead">
           <h1 className="heading">Currently Logged in</h1>
           <div className="details">
-            <label id="h4">
-              Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
-            </label>
+            <label id="h4">Name&nbsp;&nbsp;&nbsp;:</label>
             &nbsp;&nbsp;&nbsp;
             <span className="sp"> {name}</span>
           </div>
 
           <div className="details">
-            <label id="h4">Contact&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</label>
+            <label id="h4">Contact&nbsp;&nbsp;&nbsp;:</label>
             &nbsp;&nbsp;&nbsp;
             <span className="sp"> {contact}</span>
           </div>
           <div className="details">
-            <label id="h4">Doctor ID&nbsp;&nbsp;:</label>&nbsp;&nbsp;&nbsp;
+            <label id="h4">Doctor ID&nbsp;&nbsp;&nbsp;:</label>
+            &nbsp;&nbsp;&nbsp;
             <span className="sp"> {docid}</span>
           </div>
         </div>
         <div className="middlec">
           <h1 className="heading">Choose the option</h1>
           <div className="cbtn">
-            <Link to="/doctoraccessrecord" className="disabled-link cbtop btrmargin">
+            <Link
+              to="/doctoraccessrecord"
+              className="disabled-link cbtop btrmargin"
+            >
               <button className="btn bt btn-primary btn-lg btn-block">
                 View Record
               </button>
