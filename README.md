@@ -37,7 +37,8 @@ Metamask browser extension
  truffle migrate 
  OR
  truffle migrate --reset (for migrating after editing the solidity contract)
-``` 
+```
+- Please fork the project :) 
 
 - To start a server and it will open a homepage file in the default browser.
 ```
