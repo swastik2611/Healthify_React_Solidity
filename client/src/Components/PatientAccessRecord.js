@@ -40,7 +40,21 @@ export default function PatientAccessRecord() {
   const [date, setDate] = useState([]);
   const [prescription, setPrescription] = useState([]);
   const [cidhash, setCidhash] = useState([]);
-
+  const [currentAccount, setCurrentAccount] = useState("");
+  const connect = async () => {
+    try {
+      const { web3 } = state;
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      setCurrentAccount(accounts[0]);
+      console.log("Connected metamask", accounts[0]);
+      // toast.success("Connected to Metamask");
+    } catch (e) {
+      console.log(e);
+      // toast.error("Error connecting to Metamask");
+    }
+  };
   useEffect(() => {
     const provider = new Web3.providers.HttpProvider("HTTP://127.0.0.1:7545");
     async function template() {
@@ -58,6 +72,7 @@ export default function PatientAccessRecord() {
         setCtr(ctr + 1);
     }
     provider && template();
+    connect();
   }, []);
     useEffect(() => {
         FetchDetails();
@@ -76,7 +91,7 @@ export default function PatientAccessRecord() {
     async function FetchDetails() {
         const { contract } = state;
         try {
-            const data = await contract.methods.viewPatients(patid).call({ from: "0xf5f59DA65F790bC66FA3B4caB20ef3DD9c051dec" });
+            const data = await contract.methods.viewPatients(patid).call({ from: currentAccount });
             console.log("pat details",data);
             setName(data[0]);
             setContact(data[1].toString());
@@ -89,7 +104,7 @@ export default function PatientAccessRecord() {
         try{
           const record = await contract.methods
             .doctorViewDetails(patid)
-            .call({ from: "0xf5f59DA65F790bC66FA3B4caB20ef3DD9c051dec" });
+            .call({ from:currentAccount });
           console.log("patient record details", record);
           setNrecords(record.length);
           for (let i = 0; i < record.length; i++) {

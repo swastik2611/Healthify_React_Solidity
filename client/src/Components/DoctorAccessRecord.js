@@ -34,13 +34,90 @@ export default function AccessRecord() {
   const [date, setDate] = useState([]);
   const [prescription, setPrescription] = useState([]);
   const [cidhash, setCidhash] = useState([]);
+  const [currentAccount, setCurrentAccount] = useState("");
+  const connect = async () => {
+    try {
+      const { web3 } = state;
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      setCurrentAccount(accounts[0]);
+      console.log("Connected metamask", accounts[0]);
+      // toast.success("Connected to Metamask");
+    } catch (e) {
+      console.log(e);
+      // toast.error("Error connecting to Metamask");
+    }
+  };
+  // const fetchParticularRecord = async () => {
+  //   const { contract } = state;
+  //   const record = await contract.methods
+  //         .doctorViewDetails(patid)
+  //         .call({ from: currentAccount });
 
+  //       console.log("record", record);
+  //       setNrecords(record.length);
+  //       // console.log("nrec", nrecords);
+
+  //       for (let i = 0; i < record.length; i++) {
+  //         ageArray.push(record[i].age);
+  //         weightArray.push(record[i].weight);
+  //         heightArray.push(record[i].height);
+  //         bloodPressureArray.push(record[i].bp);
+  //         heartRateArray.push(record[i].heartrate);
+  //         temperatureArray.push(record[i].temp);
+  //         dateArray.push(record[i].date);
+  //         prescriptionArray.push(record[i].prescription);
+  //         cidhashArray.push(record[i].report);
+  //         if (cidhashArray[i] === "") {
+  //           linkArray.push("no_record");
+  //         } else {
+  //           linkArray.push(llink + cidhashArray[i] + rlink);
+  //         }
+  //       }
+  //       setPid(patid);
+  //       setBloodPressure(bloodPressureArray);
+  //       setHeartRate(heartRateArray);
+  //       setTemperature(temperatureArray);
+  //       setDate(dateArray);
+  //       setPrescription(prescriptionArray);
+  //       setCidhash(cidhashArray);
+  //       setLink(linkArray);
+  //       const intWeightArray = weightArray.map((bigint) => Number(bigint));
+  //       setWeight(intWeightArray);
+  //       // console.log("wt arr",intWeightArray);
+
+  //       const intAgeArray = ageArray.map((bigint) => Number(bigint));
+  //       setAge(intAgeArray);
+  //       // console.log("age arr",intAgeArray);
+
+  //       const intHeightArray = heightArray.map((bigint) => Number(bigint));
+  //       setHeight(intHeightArray);
+  //       // console.log("height arr",intHeightArray);
+
+  //       const intTempArray = temperatureArray.map((bigint) => Number(bigint));
+  //       setTemperature(intTempArray);
+  //       // console.log("temp arr",intTempArray);
+
+  //       // console.log("age",age);
+  //       // console.log("weight",weight);
+  //       // console.log("height",height);
+  //       // console.log("bloodPressure",bloodPressure);
+  //       // console.log("heartRate",heartRate);
+  //       // console.log("temperature",temperature);
+  //       // console.log("date",date);
+  //       // console.log("prescription",prescription);
+  //       console.log("cidhash", cidhash);
+  //       console.log("link", link);
+  // }
   async function fetchRecords() {
     const { contract } = state;
     try {
+      const { contract } = state;
       const record = await contract.methods
         .doctorViewDetails(patid)
-        .call({ from: "0xf5f59DA65F790bC66FA3B4caB20ef3DD9c051dec" });
+        .call({ from: currentAccount });
+
       console.log("record", record);
       setNrecords(record.length);
       // console.log("nrec", nrecords);
@@ -93,7 +170,7 @@ export default function AccessRecord() {
       // console.log("temperature",temperature);
       // console.log("date",date);
       // console.log("prescription",prescription);
-      console.log("cidhash",cidhash);
+      console.log("cidhash", cidhash);
       console.log("link", link);
     } catch (e) {
       console.error(e);
@@ -101,19 +178,48 @@ export default function AccessRecord() {
       alert("Inavlid Patient ID");
     }
   }
+
+  // async function fetchRecords() {
+  //   const { contract } = state;
+  //   try {
+  //     const transaction = contract.methods.doctorViewDetails(patid);
+  //     const gasEstimate = await transaction.estimateGas({
+  //       from: currentAccount,
+  //     });
+
+  //     const confirmed = await window.ethereum.send("eth_sendTransaction", [
+  //       {
+  //         to: contract.options.address, // The contract address
+  //         data: transaction.encodeABI(), // Encoded transaction data
+  //         gas: gasEstimate.toString(), // Gas limit as a string
+  //         from: currentAccount, // The user's account
+  //       },
+  //     ]);
+  //     if (confirmed) {
+  //       // Transaction confirmed by user, call the method
+  //       fetchParticularRecord();
+  //     }
+  //        else {
+  //       console.log("User canceled the transaction.");
+  //     }
+  //     fetchParticularRecord();
+  //   } catch (e) {
+  //     console.error(e);
+  //     // toast.error("Invalid Patient ID");
+  //     alert("Inavlid Patient ID");
+  //   }
+  // }
   useEffect(() => {
     setInd(0);
   }, [patid]);
   function getPrevious() {
-    if(ind>0)
-    {
-      setInd(ind-1);
+    if (ind > 0) {
+      setInd(ind - 1);
     }
   }
   function getNext() {
-    if(ind<nrecords-1)
-    {
-      setInd(ind+1);
+    if (ind < nrecords - 1) {
+      setInd(ind + 1);
     }
   }
   useEffect(() => {
@@ -132,6 +238,7 @@ export default function AccessRecord() {
       setState({ web3: web3, contract: contract });
     }
     provider && template();
+    connect();
   }, []);
   return (
     <>

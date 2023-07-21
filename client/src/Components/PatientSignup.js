@@ -3,6 +3,7 @@ import "../CSS/PatientSignup.css";
 import healthif from "../Images/healthif.png";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import{ethers} from "ethers";
 import Web3, { net } from "web3";
 import { useState, useEffect } from "react";
 import healthify from "../contracts/healthify.json";
@@ -15,6 +16,21 @@ export default function DoctorSignup() {
   const [patid, setPatid] = useState("");
   const [password, setPassword] = useState("");
   const [cpassword, setCpassword] = useState("");
+  const [currentAccount, setCurrentAccount] = useState("");
+  const connect = async () => {
+    try {
+      const { web3 } = state;
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      setCurrentAccount(accounts[0]);
+      console.log("Connected metamask", accounts[0]);
+      // toast.success("Connected to Metamask");
+    } catch (e) {
+      console.log(e);
+      // toast.error("Error connecting to Metamask");
+    }
+  };
   async function Submitted() {
     //patientSignUp to blockchain
     if (password !== cpassword) {
@@ -25,18 +41,48 @@ export default function DoctorSignup() {
       `Name: ${name}, Contact: ${contact}, Patid: ${patid}, Password: ${password}, Cpassword: ${cpassword}`
     );
     const { contract } = state;
+    // try {
+    //   await contract.methods
+    //     .patientSignUp(name, contact, patid, password)
+    //     .send({
+    //       from: "0xf5f59DA65F790bC66FA3B4caB20ef3DD9c051dec",
+    //       gas: 3000000,
+    //     });
+    //   console.log("Submitted to blockchain");
+    //   alert("Account Created Successfully");
+    //   navigate("/patientsignin");
+    // } catch (e) {
+    //   console.error(e);
+    //   console.log("ID already exists");
+    //   alert("ID already exists");
+    // }
     try {
-      await contract.methods
-        .patientSignUp(name, contact, patid, password)
-        .send({
-          from: "0xf5f59DA65F790bC66FA3B4caB20ef3DD9c051dec",
-          gas: 3000000,
-        });
-      console.log("Submitted to blockchain");
-      alert("Account Created Successfully");
-      navigate("/patientsignin");
-    } catch (e) {
-      console.error(e);
+      const transaction = contract.methods.patientSignUp(
+        name,
+        contact,
+        patid,
+        password
+      );
+      const gasEstimate = await transaction.estimateGas({
+        from: currentAccount,
+      });
+      const confirmed = await window.ethereum.send("eth_sendTransaction", [
+        {
+          to: contract.options.address, // The contract address
+          data: transaction.encodeABI(), // Encoded transaction data
+          gas: gasEstimate.toString(), // Hex value of the gas limit
+          from: currentAccount, // The user's account
+        },
+      ]);
+      if (confirmed) {
+        console.log("Transaction confirmed by user.");
+        alert("Account Created Successfully");
+        navigate("/patientsignin");
+      } else {
+        console.log("User canceled the transaction.");
+      }
+    } catch (error) {
+      console.error("Error during transaction:", error);
       console.log("ID already exists");
       alert("ID already exists");
     }
@@ -69,6 +115,7 @@ export default function DoctorSignup() {
       setState({ web3: web3, contract: contract });
     }
     provider && template();
+    connect();
   }, []);
   return (
     <>

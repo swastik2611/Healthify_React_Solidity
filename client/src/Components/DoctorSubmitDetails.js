@@ -9,7 +9,6 @@ import { Web3Storage, getFilesFromPath } from "web3.storage";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-
 export default function DoctorSubmitDetails() {
   const [state, setState] = useState({ web3: null, contract: null });
   const token=process.env.REACT_APP_WEB3_TOKEN;
@@ -26,50 +25,94 @@ export default function DoctorSubmitDetails() {
   const [prescription, setPrescription] = useState("");
   const [file, setFile] = useState(null);
   const [cidhash, setCidhash] = useState("");
+  const [currentAccount, setCurrentAccount] = useState("");
+  const connect = async () => {
+    try {
+      const { web3 } = state;
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      setCurrentAccount(accounts[0]);
+      console.log("Connected metamask", accounts[0]);
+      // toast.success("Connected to Metamask");
+    } catch (e) {
+      console.log(e);
+      // toast.error("Error connecting to Metamask");
+    }
+  };
   async function Submitted() {
     const { contract } = state;
     try {
       const exist = await contract.methods
         .is_patient_registered(pid)
-        .call({ from: "0xf5f59DA65F790bC66FA3B4caB20ef3DD9c051dec" });
+        .call({ from: currentAccount });
       if (!exist) {
         alert("Patient ID not registered");
         return;
       } else {
-        toast.success("Submission Successful");
         const cid = await storage.put([file]);
         setCidhash(cid);
         console.log(typeof(cid));
         // alert("Patient ID registered");
         console.log(cidhash);
-        await contract.methods
-          .doctorSubmitDetails(
-            pid,
-            age,
-            weight,
-            height,
-            bloodPressure,
-            heartRate,
-            temperature,
-            date,
-            prescription,
-            cidhash
-          )
-          .send({
-            from: "0xf5f59DA65F790bC66FA3B4caB20ef3DD9c051dec",
-            gas: 3000000,
-          });
-          document.getElementById("name").value = "";
-          document.getElementById("age").value = "";
-          document.getElementById("weight").value = "";
-          document.getElementById("height").value = "";
-          document.getElementById("bloodPressure").value = "";
-          document.getElementById("heartRate").value = "";
-          document.getElementById("temperature").value = "";
-          document.getElementById("date").value = "";
-          document.getElementById("prescription").value = "";
+        // await contract.methods
+        //   .doctorSubmitDetails(
+        //     pid,
+        //     age,
+        //     weight,
+        //     height,
+        //     bloodPressure,
+        //     heartRate,
+        //     temperature,
+        //     date,
+        //     prescription,
+        //     cidhash
+        //   )
+        //   .send({
+        //     from: "0xf5f59DA65F790bC66FA3B4caB20ef3DD9c051dec",
+        //     gas: 3000000,
+        //   });
+        const transaction = contract.methods.doctorSubmitDetails(
+          pid,
+          age,
+          weight,
+          height,
+          bloodPressure,
+          heartRate,
+          temperature,
+          date,
+          prescription,
+          cidhash
+        );
+         const gasEstimate = await transaction.estimateGas({
+           from: currentAccount,
+         });
+         const confirmed = await window.ethereum.send("eth_sendTransaction", [
+           {
+             to: contract.options.address, // The contract address
+             data: transaction.encodeABI(), // Encoded transaction data
+             gas: gasEstimate.toString(), // Gas limit as a string
+             from: currentAccount, // The user's account
+           },
+         ]);
+         if (confirmed) {
+           // Transaction confirmed by user, call the method
+           toast.success("Submission Successful");
+           const data = await transaction.call({ from: currentAccount });
+           console.log(data);
+           document.getElementById("name").value = "";
+           document.getElementById("age").value = "";
+           document.getElementById("weight").value = "";
+           document.getElementById("height").value = "";
+           document.getElementById("bloodPressure").value = "";
+           document.getElementById("heartRate").value = "";
+           document.getElementById("temperature").value = "";
+           document.getElementById("date").value = "";
+           document.getElementById("prescription").value = "";
            document.getElementById("file").reset();
-
+         } else {
+           console.log("User canceled the transaction.");
+         }
       }
     } catch (e) {
       console.error(e);
@@ -108,6 +151,7 @@ export default function DoctorSubmitDetails() {
       setState({ web3: web3, contract: contract });
     }
     provider && template();
+    connect();
   }, []);
   return (
     <>

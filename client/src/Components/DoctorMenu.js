@@ -14,6 +14,21 @@ export default function DoctorMenu() {
     const [name, setName] = useState("");
     const [contact, setContact] = useState(null);
     const [docid, setDocid] = useState(location.state.docid);
+    const [currentAccount, setCurrentAccount] = useState("");
+    const connect = async () => {
+      try {
+        const { web3 } = state;
+        const accounts = await window.ethereum.request({
+          method: "eth_requestAccounts",
+        });
+        setCurrentAccount(accounts[0]);
+        console.log("Connected metamask", accounts[0]);
+        // toast.success("Connected to Metamask");
+      } catch (e) {
+        console.log(e);
+        // toast.error("Error connecting to Metamask");
+      }
+    };
     // console.log("hmm",location.state.docid);
     useEffect(() => {
         const provider = new Web3.providers.HttpProvider("HTTP://127.0.0.1:7545");
@@ -32,6 +47,7 @@ export default function DoctorMenu() {
             setCtr(ctr + 1);
         }
         provider && template();
+        connect();
     }, []);
     useEffect(() => {
         FetchDetails();
@@ -56,7 +72,7 @@ export default function DoctorMenu() {
     try {
       const data = await contract.methods
         .viewDoctors(docid)
-        .call({ from: "0xf5f59DA65F790bC66FA3B4caB20ef3DD9c051dec" });
+        .call({ from: currentAccount });
       console.log("data",data);
       setName(data[0]);
       setContact(data[1].toString());

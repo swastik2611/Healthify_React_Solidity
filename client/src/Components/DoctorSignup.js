@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Web3, { net } from "web3";
 import { useState, useEffect } from "react";
 import healthify from "../contracts/healthify.json";
-
+import { ethers } from "ethers";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -18,6 +18,23 @@ export default function DoctorSignup() {
   const [docid, setDocid] = useState("");
   const [password, setPassword] = useState("");
   const [cpassword, setCpassword] = useState("");
+  const [currentAccount, setCurrentAccount] = useState("");
+  
+  //For connecting to metamask wallet through account using button
+  const connect = async () => {
+    try {
+      const { web3 } = state;
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      setCurrentAccount(accounts[0]);
+      console.log("Connected metamask", accounts[0]);
+      // toast.success("Connected to Metamask");
+    } catch (e) {
+      console.log(e);
+      toast.error("Error connecting to Metamask");
+    }
+  };
   async function Submitted() {
     //doctorSignUp to blockchain
     if (password !== cpassword) {
@@ -29,18 +46,50 @@ export default function DoctorSignup() {
     );
     const { contract } = state;
     try {
-      await contract.methods.doctorSignUp(name, contact, docid, password).send({
-        from: "0xf5f59DA65F790bC66FA3B4caB20ef3DD9c051dec",
-        gas: 3000000,
+
+      // await contract.methods.doctorSignUp(name, contact, docid, password).send({
+      //   from: "0xf5f59DA65F790bC66FA3B4caB20ef3DD9c051dec",
+      //   // from:currentAccount,
+      //   gas: 3000000,
+      // });
+      const transaction = contract.methods.doctorSignUp(
+        name,
+        contact,
+        docid,
+        password
+      );
+      const gasEstimate = await transaction.estimateGas({
+        from: currentAccount,
       });
-      console.log("Submitted to blockchain");
-      alert("Account Created Successfully");
-      navigate("/doctorsignin");
-    } catch (e) {
-      console.error(e);
+      const confirmed = await window.ethereum.send("eth_sendTransaction", [
+        {
+          to: contract.options.address, // The contract address
+          data: transaction.encodeABI(), // Encoded transaction data
+          gas: gasEstimate.toString(), // Hex value of the gas limit
+          from: currentAccount, // The user's account
+        },
+      ]);
+      if (confirmed) {
+        console.log("Transaction confirmed by user.");
+        alert("Account Created Successfully");
+        navigate("/doctorsignin");
+      } else {
+        console.log("User canceled the transaction.");
+      }
+    } catch (error) {
+      console.error("Error during transaction:", error);
       console.log("ID already exists");
       alert("ID already exists");
     }
+      // console.log("curr",currentAccount);
+      // console.log("Submitted to blockchain");
+      // alert("Account Created Successfully");
+      // navigate("/doctorsignin");
+    // } catch (e) {
+    //   console.error(e);
+    //   console.log("ID already exists");
+    //   alert("ID already exists");
+    // }
   }
   useEffect(() => {
     const provider = new Web3.providers.HttpProvider("HTTP://127.0.0.1:7545");
@@ -58,6 +107,7 @@ export default function DoctorSignup() {
       setState({ web3: web3, contract: contract });
     }
     provider && template();
+    connect();
   }, []);
   return (
     <>
@@ -203,6 +253,7 @@ export default function DoctorSignup() {
           </div>
         </div>
       </section>
+      {/* <button onClick={connect}>Connect</button> */}
       <ToastContainer />
     </>
   );

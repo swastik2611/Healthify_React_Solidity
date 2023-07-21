@@ -12,19 +12,63 @@ export default function DoctorSignin() {
   const [state, setState] = useState({ web3: null, contract: null });
   const [docid, setDocid] = useState("");
   const [password, setPassword] = useState("");
+  const [currentAccount, setCurrentAccount] = useState("");
+  const connect = async () => {
+    try {
+      const { web3 } = state;
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      setCurrentAccount(accounts[0]);
+      console.log("Connected metamask", accounts[0]);
+      // toast.success("Connected to Metamask");
+    } catch (e) {
+      console.log(e);
+      // toast.error("Error connecting to Metamask");
+    }
+  };
   async function Submitted() {
     //doctorSignin to blockchain
     console.log(`Docid: ${docid}, Password: ${password}`);
     const { contract } = state;
+    // try {
+    //   const data = await contract.methods.doctorSignIn(docid, password).call({from:"0xf5f59DA65F790bC66FA3B4caB20ef3DD9c051dec"});
+    //   console.log(data);
+    //   // alert("Login Successful");
+    //   navigate("/doctormenu",{state:{docid:docid}});
+    // }
+    // catch (e) {
+    //   console.error(e);
+    //   console.log("Inavlid Credentials");
+    //   alert("Invalid Credentials");
+    //   document.getElementById("username").value = "";
+    //   document.getElementById("password").value = "";
+    // }
     try {
-      const data = await contract.methods.doctorSignIn(docid, password).call({from:"0xf5f59DA65F790bC66FA3B4caB20ef3DD9c051dec"});
-      console.log(data);
-      // alert("Login Successful");
-      navigate("/doctormenu",{state:{docid:docid}});
-    }
-    catch (e) {
-      console.error(e);
-      console.log("Inavlid Credentials");
+      const transaction = contract.methods.doctorSignIn(docid, password);
+      const gasEstimate = await transaction.estimateGas({
+        from: currentAccount,
+      });
+      const confirmed = await window.ethereum.send("eth_sendTransaction", [
+        {
+          to: contract.options.address, // The contract address
+          data: transaction.encodeABI(), // Encoded transaction data
+          gas: gasEstimate.toString(), // Gas limit as a string
+          from: currentAccount, // The user's account
+        },
+      ]);
+      if (confirmed) {
+        // Transaction confirmed by user, call the method
+        const data = await transaction.call({ from: currentAccount });
+        console.log(data);
+        // alert("Login Successful");
+        navigate("/doctormenu", { state: { docid: docid } });
+      } else {
+        console.log("User canceled the transaction.");
+      }
+    } catch (error) {
+      console.error("Error during transaction:", error);
+      console.log("Invalid Credentials");
       alert("Invalid Credentials");
       document.getElementById("username").value = "";
       document.getElementById("password").value = "";
@@ -46,6 +90,7 @@ export default function DoctorSignin() {
       setState({ web3: web3, contract: contract });
     }
     provider && template();
+    connect();
   }, []);
   return (
     <>

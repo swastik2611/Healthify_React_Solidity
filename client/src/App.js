@@ -11,7 +11,6 @@ import DoctorSignup from './Components/DoctorSignup';
 import DoctorMenu from './Components/DoctorMenu';
 import DoctorAccessRecord from './Components/DoctorAccessRecord';
 import PatientAccessRecord from './Components/PatientAccessRecord';
-import DoctorSignup2 from "./Components/DoctorSignup2";
 function App() {
   return (
     <>
@@ -22,7 +21,6 @@ function App() {
         <Route path="/patientsignup" element={<PatientSignup />} />
         <Route path="/doctorsignin" element={<DoctorSignin />} />
         <Route path="/doctorsignup" element={<DoctorSignup />} />
-        <Route path="/doctorsignup2" element={<DoctorSignup2 />} />
         <Route path="/doctorsubmitdetails" element={<DoctorSubmitDetails />} />
         <Route path="/doctormenu" element={<DoctorMenu />} />
         <Route path="/doctoraccessrecord" element={<DoctorAccessRecord />} />

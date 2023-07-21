@@ -12,24 +12,65 @@ export default function PatientSignin() {
    const [state, setState] = useState({ web3: null, contract: null });
    const [patid, setPatid] = useState("");
    const [password, setPassword] = useState("");
+   const [currentAccount, setCurrentAccount] = useState("");
+   const connect = async () => {
+     try {
+       const { web3 } = state;
+       const accounts = await window.ethereum.request({
+         method: "eth_requestAccounts",
+       });
+       setCurrentAccount(accounts[0]);
+       console.log("Connected metamask", accounts[0]);
+       // toast.success("Connected to Metamask");
+     } catch (e) {
+       console.log(e);
+       // toast.error("Error connecting to Metamask");
+     }
+   };
    async function Submitted() {
      //patientSignin to blockchain
      console.log(`Patid: ${patid}, Password: ${password}`);
      const { contract } = state;
-     try {
-       const data = await contract.methods
-         .patientSignIn(patid, password)
-         .call({ from: "0xf5f59DA65F790bC66FA3B4caB20ef3DD9c051dec" });
-       console.log(data);
+    //  try {
+    //    const data = await contract.methods
+    //      .patientSignIn(patid, password)
+    //      .call({ from: "0xf5f59DA65F790bC66FA3B4caB20ef3DD9c051dec" });
+    //    console.log(data);
+    //     navigate("/patientaccessrecord", { state: { patid: patid } });
+    //  } catch (e) {
+    //    console.error(e);
+    //    console.log("Inavlid Credentials");
+    //    alert("Invalid Credentials");
+    //    document.getElementById("username").value = "";
+    //    document.getElementById("password").value = "";
+    //  }
+    try{
+      const transaction = contract.methods.patientSignIn(patid, password);
+      const gasEstimate = await transaction.estimateGas({ from: currentAccount });
+      const confirmed = await window.ethereum.send("eth_sendTransaction", [
+        {
+          to: contract.options.address, // The contract address
+          data: transaction.encodeABI(), // Encoded transaction data
+          gas: gasEstimate.toString(), // Gas limit as a string
+          from: currentAccount, // The user's account
+        },
+      ]);
+       if (confirmed) {
+        // Transaction confirmed by user, call the method
+        const data = await transaction.call({ from: currentAccount });
+        console.log(data);
         navigate("/patientaccessrecord", { state: { patid: patid } });
-     } catch (e) {
-       console.error(e);
-       console.log("Inavlid Credentials");
-       alert("Invalid Credentials");
-       document.getElementById("username").value = "";
-       document.getElementById("password").value = "";
-     }
-   }
+      } else {
+        console.log("User canceled the transaction.");
+      }
+    } catch (error) {
+      console.error("Error during transaction:", error);
+      console.log("Invalid Credentials");
+      alert("Invalid Credentials");
+      document.getElementById("username").value = "";
+      document.getElementById("password").value = "";
+    }
+  }
    useEffect(() => {
      const provider = new Web3.providers.HttpProvider("HTTP://127.0.0.1:7545");
      async function template() {
@@ -46,6 +87,7 @@ export default function PatientSignin() {
        setState({ web3: web3, contract: contract });
      }
      provider && template();
+     connect();
    }, []);
   return (
     <>
