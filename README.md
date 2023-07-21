@@ -38,7 +38,6 @@ Metamask browser extension
  OR
  truffle migrate --reset (for migrating after editing the solidity contract)
 ```
-- Please fork the project :) 
 
 - To start a server and it will open a homepage file in the default browser.
 ```
@@ -46,3 +45,4 @@ npm start
 ``` 
 ### 5) Login to metamask ,and connect to the site manually(i.e.localhost:3000)
 ### 6) Interact with website
+- Please fork the project :) 
