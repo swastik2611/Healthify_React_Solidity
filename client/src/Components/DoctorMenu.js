@@ -23,6 +23,7 @@ export default function DoctorMenu() {
         });
         setCurrentAccount(accounts[0]);
         console.log("Connected metamask", accounts[0]);
+        setCtr(ctr + 1);
         // toast.success("Connected to Metamask");
       } catch (e) {
         console.log(e);
@@ -44,10 +45,9 @@ export default function DoctorMenu() {
             );
             // console.log(contract);//instance of contract
             setState({ web3: web3, contract: contract });
-            setCtr(ctr + 1);
+            connect();
         }
         provider && template();
-        connect();
     }, []);
     useEffect(() => {
         FetchDetails();
